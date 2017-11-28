@@ -17,7 +17,6 @@ module.exports = {
     },
     plugins: ['react'],
     rules: {
-      'react/prop-types': ['off'],
       'linebreak-style': ['error', 'unix'],
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
