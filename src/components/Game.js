@@ -9,7 +9,7 @@ class Game extends Component {
     };
 
     state = {
-        selectedNumber: []
+        selectedIds: []
     };
 
     randomNumbers = Array
@@ -21,12 +21,12 @@ class Game extends Component {
         .reduce((acc, curr) => acc + curr, 0);
 
     isNumberSelected = (numberIndex) => {
-        return this.state.selectedNumber.indexOf(numberIndex) >= 0;
+        return this.state.selectedIds.indexOf(numberIndex) >= 0;
     };
 
     selectNumber = (numberIndex) => {
         this.setState((prevState) => ({
-            selectedNumber: [...prevState.selectedNumber, numberIndex]
+            selectedIds: [...prevState.selectedIds, numberIndex]
         }));
     };
 
