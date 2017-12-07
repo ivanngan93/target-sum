@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import RandomNumber from './RandomNumber.js';
+import shuffle from 'lodash.shuffle';
 
 class Game extends Component {
     static propTypes = {
         randomNumberCount: PropTypes.number.isRequired,
-        initialSeconds: PropTypes.number.isRequired
+        initialSeconds: PropTypes.number.isRequired,
+        onPlayAgain: PropTypes.func.isRequired
     };
 
     state = {
@@ -23,6 +25,8 @@ class Game extends Component {
     target = this.randomNumbers
         .slice(0, this.props.randomNumberCount - 2)
         .reduce((acc, curr) => acc + curr, 0);
+    
+    shuffledRandomNumbers = shuffle(this.randomNumbers);
 
     componentDidMount() {
         this.intervalId = setInterval(() => {
@@ -61,7 +65,7 @@ class Game extends Component {
 
     calcGameStatus = (nextState) => {
         const sumSelected = nextState.selectedIds.reduce((acc, curr) => {
-            return acc + this.randomNumbers[curr];
+            return acc + this.shuffledRandomNumbers[curr];
         }, 0);
 
         if (nextState.remainingSeconds === 0) {
@@ -89,7 +93,7 @@ class Game extends Component {
                     {this.target}
                 </Text>
                 <View style={styles.randomContainer}>
-                    {this.randomNumbers.map((randomNumber, index) => 
+                    {this.shuffledRandomNumbers.map((randomNumber, index) => 
                         <RandomNumber 
                             key={index} 
                             id={index}
@@ -98,6 +102,9 @@ class Game extends Component {
                             onPress={this.selectNumber} />
                     )}
                 </View>
+                { this.gameStatus !== 'PLAYING' && (
+                    <Button title="Play Again" onPress={this.props.onPlayAgain} />
+                )}
                 <Text>{this.state.remainingSeconds}</Text>
             </View>
         );
